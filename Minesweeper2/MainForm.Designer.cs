@@ -28,18 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
+            MainPanel = new Panel();
+            BtnStart = new Button();
             SuspendLayout();
+            // 
+            // MainPanel
+            // 
+            MainPanel.BorderStyle = BorderStyle.Fixed3D;
+            MainPanel.Location = new Point(12, 71);
+            MainPanel.Name = "MainPanel";
+            MainPanel.Size = new Size(776, 776);
+            MainPanel.TabIndex = 0;
+            // 
+            // BtnStart
+            // 
+            BtnStart.Location = new Point(12, 12);
+            BtnStart.Name = "BtnStart";
+            BtnStart.Size = new Size(150, 46);
+            BtnStart.TabIndex = 1;
+            BtnStart.Text = "Start";
+            BtnStart.UseVisualStyleBackColor = true;
             // 
             // Minesweeper2
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 755);
+            ClientSize = new Size(800, 862);
+            Controls.Add(BtnStart);
+            Controls.Add(MainPanel);
             Name = "Minesweeper2";
             Text = "Minesweeper2";
+            Load += this.Minesweeper2_Load;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel MainPanel;
+        private Button BtnStart;
     }
 }
