@@ -48,6 +48,7 @@
             BtnStart.TabIndex = 1;
             BtnStart.Text = "Start";
             BtnStart.UseVisualStyleBackColor = true;
+            BtnStart.Click += BtnStart_Click;
             // 
             // Minesweeper2
             // 
@@ -58,7 +59,7 @@
             Controls.Add(MainPanel);
             Name = "Minesweeper2";
             Text = "Minesweeper2";
-            Load += this.Minesweeper2_Load;
+            Load += Minesweeper2_Load;
             ResumeLayout(false);
         }
 
