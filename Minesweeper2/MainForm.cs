@@ -25,7 +25,7 @@
                 for (int col = 0; col < numCols; col++)
                 {
                     Cell cell = new Cell();
-                    cell.Image = Properties.Resources.btn_blank;
+                    cell.CurrentMode = Cell.Mode.BtnBlank; // セルの初期モードを設定
                     cell.Location = new Point(col * cellSize, row * cellSize); // セルの位置を設定
                     cell.Size = new Size(cellSize, cellSize); // セルのサイズを設定
                     cell.SizeMode = PictureBoxSizeMode.StretchImage; // 画像のサイズモードを設定
