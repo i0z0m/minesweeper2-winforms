@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+	<EnableNETAnalyzers>true</EnableNETAnalyzers>
+	<AnalysisLevel>latest-All</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
