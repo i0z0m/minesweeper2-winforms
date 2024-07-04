@@ -8,5 +8,8 @@
     <Setting Name="NumberOfRows" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
+    <Setting Name="PercentageOfMines" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -46,5 +46,17 @@ namespace Minesweeper2.Properties {
                 this["NumberOfRows"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int PercentageOfMines {
+            get {
+                return ((int)(this["PercentageOfMines"]));
+            }
+            set {
+                this["PercentageOfMines"] = value;
+            }
+        }
     }
 }
