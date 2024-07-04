@@ -62,9 +62,10 @@
                 _ => throw new ArgumentOutOfRangeException(nameof(CurrentMode), $"Unsupported cell mode: {CurrentMode}")
             };
         }
-
         private void Cell_Click(object sender, EventArgs e)
         {
+            MouseEventArgs? mouseEvent = e as MouseEventArgs;
+
             string modeName = CurrentMode.ToString();
             if (modeName.Contains("Ans"))
             {
@@ -73,20 +74,24 @@
 
             if (modeName.Contains("Btn"))
             {
-                // ここに具体的な処理を記述
-                // 例: BtnBlank なら BtnFlag に、BtnFlag なら BtnBlank に切り替える
-                switch (CurrentMode)
+                if (mouseEvent?.Button == MouseButtons.Left)
                 {
-                    case Mode.BtnBlank:
-                        CurrentMode = Mode.BtnFlag;
-                        break;
-                    case Mode.BtnFlag:
-                        CurrentMode = Mode.BtnBlank;
-                        break;
-                        // 他のボタンモードに対する処理もここに追加可能
+                    // TODO ここに左クリック時の処理を記述
+                    // 例: BtnBlank なら AnsBlank1 に変更（実際のロジックはアプリケーションのルールに依存）
+                    CurrentMode = Mode.AnsBlank1; // 仮の処理
+                }
+                else if (mouseEvent?.Button == MouseButtons.Right)
+                {
+                    // ここに右クリック時の処理を記述
+                    CurrentMode = CurrentMode switch
+                    {
+                        Mode.BtnBlank => Mode.BtnFlag,
+                        Mode.BtnFlag => Mode.BtnHold,
+                        Mode.BtnHold => Mode.BtnBlank,
+                        _ => CurrentMode // それ以外の場合は変更しない
+                    };
                 }
             }
         }
-
     }
 }
