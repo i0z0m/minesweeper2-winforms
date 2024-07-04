@@ -141,6 +141,12 @@
             {
                 if (mouseEvent?.Button == MouseButtons.Left)
                 {
+                    // BtnFlagまたはBtnHoldのときは反応しない
+                    if (cell.CurrentMode == Cell.Mode.BtnFlag || cell.CurrentMode == Cell.Mode.BtnHold)
+                    {
+                        return;
+                    }
+
                     // 左クリック時の処理
                     if (cell.Mine)
                     {
