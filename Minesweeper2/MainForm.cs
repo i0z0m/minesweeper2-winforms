@@ -36,7 +36,7 @@
 
         private void BtnStart_Click(object sender, EventArgs e)
         {
-
+            FillCells();
         }
     }
 }
