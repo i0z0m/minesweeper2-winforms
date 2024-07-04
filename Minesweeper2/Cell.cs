@@ -5,6 +5,7 @@
         public Cell()
         {
             InitializeComponent();
+            this.Click += Cell_Click;
         }
 
         public enum Mode
@@ -61,5 +62,31 @@
                 _ => throw new ArgumentOutOfRangeException(nameof(CurrentMode), $"Unsupported cell mode: {CurrentMode}")
             };
         }
+
+        private void Cell_Click(object sender, EventArgs e)
+        {
+            string modeName = CurrentMode.ToString();
+            if (modeName.Contains("Ans"))
+            {
+                return;
+            }
+
+            if (modeName.Contains("Btn"))
+            {
+                // ここに具体的な処理を記述
+                // 例: BtnBlank なら BtnFlag に、BtnFlag なら BtnBlank に切り替える
+                switch (CurrentMode)
+                {
+                    case Mode.BtnBlank:
+                        CurrentMode = Mode.BtnFlag;
+                        break;
+                    case Mode.BtnFlag:
+                        CurrentMode = Mode.BtnBlank;
+                        break;
+                        // 他のボタンモードに対する処理もここに追加可能
+                }
+            }
+        }
+
     }
 }

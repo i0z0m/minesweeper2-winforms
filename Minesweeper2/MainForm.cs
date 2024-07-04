@@ -2,41 +2,62 @@
 {
     public partial class Minesweeper2 : Form
     {
+        private Dictionary<Point, Cell> _cellList = new Dictionary<Point, Cell>();
+
         public Minesweeper2()
         {
             InitializeComponent();
+            InitializeCellList();
         }
 
         private void Minesweeper2_Load(object sender, EventArgs e)
         {
-            FillCells();
+            FillMainPanel();
         }
 
-        private void FillCells()
+        private void InitializeCellList()
         {
-            MainPanel.Controls.Clear(); // 既存のコントロールをクリア
+            int Rows = Properties.Settings.Default.NumberOfRows;
+            int Colmns = Properties.Settings.Default.NumberOfColumns;
 
-            int numRows = Properties.Settings.Default.NumberOfRows;
-            int numCols = Properties.Settings.Default.NumberOfColumns;
-            int cellSize = 50; // 各セルのサイズ
-
-            for (int row = 0; row < numRows; row++)
+            for (int row = 0; row < Rows; row++)
             {
-                for (int col = 0; col < numCols; col++)
+                for (int col = 0; col < Colmns; col++)
                 {
-                    Cell cell = new Cell();
-                    cell.CurrentMode = Cell.Mode.BtnBlank; // セルの初期モードを設定
-                    cell.Location = new Point(col * cellSize, row * cellSize); // セルの位置を設定
-                    cell.Size = new Size(cellSize, cellSize); // セルのサイズを設定
-                    cell.SizeMode = PictureBoxSizeMode.StretchImage; // 画像のサイズモードを設定
-                    MainPanel.Controls.Add(cell); // MainPanelにセルを追加
+                    int cellSize = 50;
+                    Point cellPosition = new Point(col * cellSize, row * cellSize);
+
+                    Cell cell = new Cell
+                    {
+                        Location = cellPosition,
+                        Size = new Size(cellSize, cellSize),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        CurrentMode = Cell.Mode.BtnBlank
+                    };
+
+                    _cellList.Add(cellPosition, cell);
                 }
+            }
+        }
+
+        private void FillMainPanel()
+        {
+            MainPanel.Controls.Clear();
+
+            foreach (var cellEntry in _cellList)
+            {
+                Cell cell = cellEntry.Value;
+                MainPanel.Controls.Add(cell);
             }
         }
 
         private void BtnStart_Click(object sender, EventArgs e)
         {
-            FillCells();
+            foreach (var cellEntry in _cellList)
+            {
+                Cell cell = cellEntry.Value;
+                cell.CurrentMode = Cell.Mode.BtnBlank;
+            }
         }
     }
 }
