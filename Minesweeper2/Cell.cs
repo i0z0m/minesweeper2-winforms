@@ -130,6 +130,12 @@
                     8 => Mode.AnsBlank8,
                     _ => Mode.AnsBlank0
                 };
+
+                if (Degree == 0)
+                {
+                    _mainForm.RevealAdjacentCells(this);
+                }
+
                 _mainForm.CheckGameState();
             }
         }

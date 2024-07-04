@@ -111,6 +111,28 @@
             }
         }
 
+        public void RevealAdjacentCells(Cell cell)
+        {
+            Point[] directions =
+            [
+                new Point(-1, -1), new Point(0, -1), new Point(1, -1),
+                new Point(-1, 0), new Point(1, 0),
+                new Point(-1, 1), new Point(0, 1), new Point(1, 1)
+            ];
+
+            foreach (var direction in directions)
+            {
+                int cellX = cell.Location.X / cell.Width;
+                int cellY = cell.Location.Y / cell.Height;
+                Point neighborPosition = new Point(cellX + direction.X, cellY + direction.Y);
+                if (_cellList.TryGetValue(neighborPosition, out Cell? neighborCell) && neighborCell.CurrentMode == Cell.Mode.BtnBlank)
+                {
+                    neighborCell.RevealCells();
+                }
+            }
+        }
+
+
         public void EndGame(bool isGameOver)
         {
             if (CurrentState == State.End) return;
