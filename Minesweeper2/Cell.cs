@@ -4,16 +4,12 @@
     {
         public bool Mine { get; set; }
         public int Degree { get; set; } // 周囲の地雷の数を表すプロパティ
-        public Point Position { get; set; } // 位置情報を持つプロパティ
-        private Dictionary<Point, Cell> _cellList; // セルリストへの参照
         private Minesweeper2 _mainForm; // MainFormへの参照
 
-        public Cell(Dictionary<Point, Cell> cellList, Point position, Minesweeper2 mainForm)
+        public Cell(Minesweeper2 mainForm)
         {
             InitializeComponent();
             this.Click += Cell_Click;
-            _cellList = cellList;
-            Position = position;
             _mainForm = mainForm;
         }
 
@@ -139,3 +135,4 @@
         }
     }
 }
+

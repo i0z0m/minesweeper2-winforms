@@ -36,17 +36,17 @@
                 for (int col = 0; col < columns; col++)
                 {
                     Point cellPosition = new Point(col, row);
-                    Cell cell = CreateCell(cellPosition, cellSize);
+                    Cell cell = CreateCell(cellSize);
+                    cell.Location = new Point(cellPosition.X * cellSize, cellPosition.Y * cellSize);
                     _cellList.Add(cellPosition, cell);
                 }
             }
         }
 
-        private Cell CreateCell(Point cellPosition, int cellSize)
+        private Cell CreateCell(int cellSize)
         {
-            return new Cell(_cellList, cellPosition, this)
+            return new Cell(this)
             {
-                Location = new Point(cellPosition.X * cellSize, cellPosition.Y * cellSize),
                 Size = new Size(cellSize, cellSize),
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 CurrentMode = Cell.Mode.BtnBlank
@@ -147,7 +147,7 @@
             }
         }
 
-        private void ShowEndGameMessage(bool isGameOver)
+        private static void ShowEndGameMessage(bool isGameOver)
         {
             string message = isGameOver ? "ゲームオーバー！" : "ゲームクリア！";
             string caption = isGameOver ? "残念でした" : "おめでとうございます";
