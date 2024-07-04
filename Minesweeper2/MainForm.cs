@@ -45,11 +45,11 @@
                 for (int col = 0; col < Colmns; col++)
                 {
                     int cellSize = 50;
-                    Point cellPosition = new Point(col * cellSize, row * cellSize);
+                    Point cellPosition = new Point(col, row); // 修正: 座標をセルのインデックスとして管理
 
                     Cell cell = new Cell
                     {
-                        Location = cellPosition,
+                        Location = new Point(col * cellSize, row * cellSize), // 表示位置
                         Size = new Size(cellSize, cellSize),
                         SizeMode = PictureBoxSizeMode.StretchImage,
                         CurrentMode = Cell.Mode.BtnBlank,
@@ -78,6 +78,7 @@
             {
                 Cell cell = cellEntry.Value;
                 cell.CurrentMode = Cell.Mode.BtnBlank;
+                cell.Degree = 0; // Degreeをリセット
             }
             PlaceMines();
             CurrentState = State.Running; // ゲームの状態をRunningに設定
@@ -98,6 +99,22 @@
             foreach (var minePosition in cellKeys)
             {
                 _cellList[minePosition].Mine = true;
+                UpdateCellDegree(minePosition);
+            }
+        }
+
+        private void UpdateCellDegree(Point minePosition)
+        {
+            int[] dx = { -1, 0, 1, -1, 1, -1, 0, 1 };
+            int[] dy = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+            for (int i = 0; i < 8; i++)
+            {
+                Point neighborPosition = new Point(minePosition.X + dx[i], minePosition.Y + dy[i]);
+                if (_cellList.TryGetValue(neighborPosition, out Cell? value))
+                {
+                    value.Degree++;
+                }
             }
         }
 
@@ -132,7 +149,19 @@
                     }
                     else
                     {
-                        cell.CurrentMode = Cell.Mode.AnsBlank1;
+                        cell.CurrentMode = cell.Degree switch
+                        {
+                            0 => Cell.Mode.AnsBlank0,
+                            1 => Cell.Mode.AnsBlank1,
+                            2 => Cell.Mode.AnsBlank2,
+                            3 => Cell.Mode.AnsBlank3,
+                            4 => Cell.Mode.AnsBlank4,
+                            5 => Cell.Mode.AnsBlank5,
+                            6 => Cell.Mode.AnsBlank6,
+                            7 => Cell.Mode.AnsBlank7,
+                            8 => Cell.Mode.AnsBlank8,
+                            _ => Cell.Mode.AnsBlank0
+                        };
                     }
                 }
                 else if (mouseEvent?.Button == MouseButtons.Right)
