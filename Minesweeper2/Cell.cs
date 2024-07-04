@@ -6,15 +6,15 @@
         public int Degree { get; set; } // 周囲の地雷の数を表すプロパティ
         public Point Position { get; set; } // 位置情報を持つプロパティ
         private Dictionary<Point, Cell> _cellList; // セルリストへの参照
-        private GameState _gameState; // ゲームの状態への参照
+        private Minesweeper2 _mainForm; // MainFormへの参照
 
-        public Cell(Dictionary<Point, Cell> cellList, Point position, GameState gameState)
+        public Cell(Dictionary<Point, Cell> cellList, Point position, Minesweeper2 mainForm)
         {
             InitializeComponent();
             this.Click += Cell_Click;
             _cellList = cellList;
             Position = position;
-            _gameState = gameState;
+            _mainForm = mainForm;
         }
 
         public enum Mode
@@ -48,7 +48,7 @@
         }
         private Mode _currentMode;
 
-        public Image GetImage() => CurrentMode switch
+        private Image GetImage() => CurrentMode switch
         {
             Mode.AnsBlank0 => Properties.Resources.ans_blank0,
             Mode.AnsBlank1 => Properties.Resources.ans_blank1,
@@ -69,23 +69,23 @@
             _ => throw new ArgumentOutOfRangeException(nameof(CurrentMode), $"Unsupported cell mode: {CurrentMode}")
         };
 
-        private void Cell_Click(object sender, EventArgs e)
+        private void Cell_Click(object? sender, EventArgs e)
         {
             // ゲームの状態がRunningでない場合は処理を中断
-            if (_gameState.CurrentState != GameState.State.Running)
+            if (_mainForm.CurrentState != Minesweeper2.State.Run)
             {
                 return;
             }
 
-            MouseEventArgs mouseEvent = e as MouseEventArgs;
+            MouseEventArgs? mouseEvent = e as MouseEventArgs;
 
             string modeName = CurrentMode.ToString();
-            if (modeName.Contains("Ans"))
+            if (modeName.Contains("Ans", StringComparison.Ordinal))
             {
                 return;
             }
 
-            if (modeName.Contains("Btn"))
+            if (modeName.Contains("Btn", StringComparison.Ordinal))
             {
                 if (mouseEvent?.Button == MouseButtons.Left)
                 {
@@ -117,31 +117,7 @@
             if (Mine)
             {
                 CurrentMode = Mode.AnsMineX; // 地雷を踏んだセルの位置をAnsMineXに設定
-                _gameState.CurrentState = GameState.State.GameOver;
-                // ゲームオーバー時にすべてのセルを明らかにする
-                foreach (var cellEntry in _cellList.Values)
-                {
-                    if (cellEntry.CurrentMode == Mode.BtnBlank || cellEntry.CurrentMode == Mode.BtnFlag || cellEntry.CurrentMode == Mode.BtnHold)
-                    {
-                        if (cellEntry.Mine)
-                        {
-                            cellEntry.CurrentMode = Mode.AnsMine; // 地雷セルはAnsMineに設定
-                        }
-                        else
-                        {
-                            cellEntry.CurrentMode = cellEntry.CurrentMode switch
-                            {
-                                Mode.BtnFlag => Mode.BtnFlagX,
-                                Mode.BtnHold => Mode.BtnHoldX,
-                                _ => cellEntry.CurrentMode
-                            };
-                            if (cellEntry.CurrentMode == Mode.BtnBlank)
-                            {
-                                cellEntry.RevealCells();
-                            }
-                        }
-                    }
-                }
+                _mainForm.EndGame(true);
             }
             else
             {
@@ -158,6 +134,7 @@
                     8 => Mode.AnsBlank8,
                     _ => Mode.AnsBlank0
                 };
+                _mainForm.CheckGameState();
             }
         }
     }
