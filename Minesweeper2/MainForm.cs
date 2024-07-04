@@ -168,14 +168,30 @@
         {
             if (cell.Mine)
             {
-                cell.CurrentMode = Cell.Mode.AnsMine;
+                cell.CurrentMode = Cell.Mode.AnsMineX; // 地雷を踏んだセルの位置をAnsMineXに設定
                 CurrentState = State.GameOver;
                 // ゲームオーバー時にすべてのセルを明らかにする
                 foreach (var cellEntry in _cellList.Values)
                 {
                     if (cellEntry.CurrentMode == Cell.Mode.BtnBlank || cellEntry.CurrentMode == Cell.Mode.BtnFlag || cellEntry.CurrentMode == Cell.Mode.BtnHold)
                     {
-                        RevealCells(cellEntry);
+                        if (cellEntry.Mine)
+                        {
+                            cellEntry.CurrentMode = Cell.Mode.AnsMine; // 地雷セルはAnsMineに設定
+                        }
+                        else
+                        {
+                            cellEntry.CurrentMode = cellEntry.CurrentMode switch
+                            {
+                                Cell.Mode.BtnFlag => Cell.Mode.BtnFlagX,
+                                Cell.Mode.BtnHold => Cell.Mode.BtnHoldX,
+                                _ => cellEntry.CurrentMode
+                            };
+                            if (cellEntry.CurrentMode == Cell.Mode.BtnBlank)
+                            {
+                                RevealCells(cellEntry);
+                            }
+                        }
                     }
                 }
             }
