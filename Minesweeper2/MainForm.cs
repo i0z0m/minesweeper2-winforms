@@ -148,27 +148,7 @@
                     }
 
                     // 左クリック時の処理
-                    if (cell.Mine)
-                    {
-                        cell.CurrentMode = Cell.Mode.AnsMine;
-                        CurrentState = State.GameOver;
-                    }
-                    else
-                    {
-                        cell.CurrentMode = cell.Degree switch
-                        {
-                            0 => Cell.Mode.AnsBlank0,
-                            1 => Cell.Mode.AnsBlank1,
-                            2 => Cell.Mode.AnsBlank2,
-                            3 => Cell.Mode.AnsBlank3,
-                            4 => Cell.Mode.AnsBlank4,
-                            5 => Cell.Mode.AnsBlank5,
-                            6 => Cell.Mode.AnsBlank6,
-                            7 => Cell.Mode.AnsBlank7,
-                            8 => Cell.Mode.AnsBlank8,
-                            _ => Cell.Mode.AnsBlank0
-                        };
-                    }
+                    RevealCells(cell);
                 }
                 else if (mouseEvent?.Button == MouseButtons.Right)
                 {
@@ -181,6 +161,39 @@
                         _ => cell.CurrentMode // それ以外の場合は変更しない
                     };
                 }
+            }
+        }
+
+        private void RevealCells(Cell cell)
+        {
+            if (cell.Mine)
+            {
+                cell.CurrentMode = Cell.Mode.AnsMine;
+                CurrentState = State.GameOver;
+                // ゲームオーバー時にすべてのセルを明らかにする
+                foreach (var cellEntry in _cellList.Values)
+                {
+                    if (cellEntry.CurrentMode == Cell.Mode.BtnBlank || cellEntry.CurrentMode == Cell.Mode.BtnFlag || cellEntry.CurrentMode == Cell.Mode.BtnHold)
+                    {
+                        RevealCells(cellEntry);
+                    }
+                }
+            }
+            else
+            {
+                cell.CurrentMode = cell.Degree switch
+                {
+                    0 => Cell.Mode.AnsBlank0,
+                    1 => Cell.Mode.AnsBlank1,
+                    2 => Cell.Mode.AnsBlank2,
+                    3 => Cell.Mode.AnsBlank3,
+                    4 => Cell.Mode.AnsBlank4,
+                    5 => Cell.Mode.AnsBlank5,
+                    6 => Cell.Mode.AnsBlank6,
+                    7 => Cell.Mode.AnsBlank7,
+                    8 => Cell.Mode.AnsBlank8,
+                    _ => Cell.Mode.AnsBlank0
+                };
             }
         }
     }
