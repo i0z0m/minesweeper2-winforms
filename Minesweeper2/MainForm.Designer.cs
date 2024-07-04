@@ -37,7 +37,7 @@
             MainPanel.BorderStyle = BorderStyle.Fixed3D;
             MainPanel.Location = new Point(12, 71);
             MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(776, 776);
+            MainPanel.Size = new Size(1006, 1007);
             MainPanel.TabIndex = 0;
             // 
             // BtnStart
@@ -54,7 +54,7 @@
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 862);
+            ClientSize = new Size(1026, 1083);
             Controls.Add(BtnStart);
             Controls.Add(MainPanel);
             Name = "Minesweeper2";
