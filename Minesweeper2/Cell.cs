@@ -33,12 +33,12 @@
             set
             {
                 _currentMode = value;
-                this.Image = GetCellImage();
+                this.Image = GetImage();
             }
         }
         private Mode _currentMode;
 
-        public Image GetCellImage()
+        public Image GetImage()
         {
             return CurrentMode switch
             {
