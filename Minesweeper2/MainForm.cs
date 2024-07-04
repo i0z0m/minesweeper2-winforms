@@ -4,11 +4,10 @@
     {
         public enum State
         {
-            initial,
+            NotStarted,
             Running,
             Paused,
-            GameOver,
-            GameClear
+            GameOver
         }
 
         // ゲームの状態を管理するプロパティ
@@ -104,6 +103,7 @@
 
         private void Cell_Click(object sender, EventArgs e)
         {
+            // ゲームの状態がRunningでない場合は処理を中断
             if (CurrentState != State.Running)
             {
                 return;
@@ -125,11 +125,15 @@
                 if (mouseEvent?.Button == MouseButtons.Left)
                 {
                     // 左クリック時の処理
-                    cell.CurrentMode = cell.Mine switch
+                    if (cell.Mine)
                     {
-                        true => Cell.Mode.AnsMine,
-                        false => Cell.Mode.AnsBlank1
-                    };
+                        cell.CurrentMode = Cell.Mode.AnsMine;
+                        CurrentState = State.GameOver;
+                    }
+                    else
+                    {
+                        cell.CurrentMode = Cell.Mode.AnsBlank1;
+                    }
                 }
                 else if (mouseEvent?.Button == MouseButtons.Right)
                 {
