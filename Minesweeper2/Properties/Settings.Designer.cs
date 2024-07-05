@@ -49,7 +49,7 @@ namespace Minesweeper2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int PercentageOfMines {
             get {
                 return ((int)(this["PercentageOfMines"]));
