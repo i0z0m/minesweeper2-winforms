@@ -113,17 +113,18 @@
 
         public void RevealAdjacentCells(Cell cell)
         {
-            Point[] directions =
-            [
+            int cellX = cell.Location.X / cell.Width;
+            int cellY = cell.Location.Y / cell.Height;
+
+            Point[] directions = new Point[]
+            {
                 new Point(-1, -1), new Point(0, -1), new Point(1, -1),
                 new Point(-1, 0), new Point(1, 0),
                 new Point(-1, 1), new Point(0, 1), new Point(1, 1)
-            ];
+            };
 
             foreach (var direction in directions)
             {
-                int cellX = cell.Location.X / cell.Width;
-                int cellY = cell.Location.Y / cell.Height;
                 Point neighborPosition = new Point(cellX + direction.X, cellY + direction.Y);
                 if (_cellList.TryGetValue(neighborPosition, out Cell? neighborCell) && neighborCell.CurrentMode == Cell.Mode.BtnBlank)
                 {
@@ -131,7 +132,6 @@
                 }
             }
         }
-
 
         public void EndGame(bool isGameOver)
         {
@@ -180,7 +180,10 @@
         {
             if (CurrentState == State.End) return;
 
-            bool isGameClear = _cellList.Values.All(cell => cell.CurrentMode != Cell.Mode.BtnBlank);
+            bool isGameClear = _cellList.Values.All(cell =>
+                (cell.Mine && cell.CurrentMode == Cell.Mode.BtnFlag) ||
+                (!cell.Mine && cell.CurrentMode != Cell.Mode.BtnBlank)
+            );
 
             if (isGameClear)
             {
@@ -189,3 +192,4 @@
         }
     }
 }
+
