@@ -8,6 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	<AnalysisLevel>latest-All</AnalysisLevel>
+	<!-- 高DPIモードをシステム対応に設定 -->
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <!-- デザイナーをDPI非対応モードに強制 -->
+    <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
   </PropertyGroup>
 
   <ItemGroup>
