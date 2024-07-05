@@ -19,7 +19,7 @@
             InitializeComponent();
             CurrentState = State.Init;
             InitializeCellList();
-            this.SizeChanged += Minesweeper2_SizeChanged; // フォームのサイズ変更イベントをハンドル
+            this.SizeChanged += Minesweeper2_SizeChanged;
             this.ResizeBegin += Minesweeper2_ResizeBegin;
             this.ResizeEnd += Minesweeper2_ResizeEnd;
         }
@@ -50,8 +50,7 @@
         private int CalculateCellSize(int rows, int columns)
         {
             int panelSize = Math.Min(MainPanel.Width, MainPanel.Height);
-            int cellSize = panelSize / Math.Max(rows, columns);
-            return cellSize;
+            return panelSize / Math.Max(rows, columns);
         }
 
         private Cell CreateCell(int cellSize)
@@ -97,20 +96,25 @@
             }
 
             int mineCount = (int)(_cellList.Count * Properties.Settings.Default.PercentageOfMines / 100.0);
+            var minePositions = GetRandomMinePositions(mineCount);
+
+            foreach (var minePosition in minePositions)
+            {
+                _cellList[minePosition].Mine = true;
+                UpdateCellDegree(minePosition);
+            }
+        }
+
+        private IEnumerable<Point> GetRandomMinePositions(int mineCount)
+        {
             using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
             {
-                var minePositions = _cellList.Keys.OrderBy(_ =>
+                return _cellList.Keys.OrderBy(_ =>
                 {
                     byte[] randomNumber = new byte[4];
                     rng.GetBytes(randomNumber);
                     return BitConverter.ToInt32(randomNumber, 0);
-                }).Take(mineCount);
-
-                foreach (var minePosition in minePositions)
-                {
-                    _cellList[minePosition].Mine = true;
-                    UpdateCellDegree(minePosition);
-                }
+                }).Take(mineCount).ToList();
             }
         }
 
@@ -276,16 +280,12 @@
             }
 
             // パネルの右辺の余分なスペースを削除
-            int panelWidth = cellSize * columns;
-            MainPanel.Width = panelWidth;
+            MainPanel.Width = cellSize * columns;
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            // ウィンドウの大きさを正方形にする処理を削除
-            // int size = Math.Min(this.ClientSize.Width, this.ClientSize.Height);
-            // this.ClientSize = new Size(size, size);
         }
     }
 }
