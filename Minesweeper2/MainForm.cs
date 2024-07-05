@@ -13,6 +13,7 @@
         public State CurrentState { get; set; }
         private Dictionary<Point, Cell> _cellList = new Dictionary<Point, Cell>();
         private bool _isResizing;
+        private const float InitialAspectRatio = 9f / 10f; // 初期ウィンドウサイズの縦横比
 
         public Minesweeper2()
         {
@@ -263,6 +264,7 @@
         {
             _isResizing = false;
             ResizeCells();
+            MaintainAspectRatio();
         }
 
         private void ResizeCells()
@@ -286,6 +288,33 @@
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
+
+            if (_isResizing) return;
+
+            int newWidth = this.Width;
+            int newHeight = (int)(newWidth / InitialAspectRatio);
+
+            if (newHeight > this.Height)
+            {
+                newHeight = this.Height;
+                newWidth = (int)(newHeight * InitialAspectRatio);
+            }
+
+            this.Size = new Size(newWidth, newHeight);
+        }
+
+        private void MaintainAspectRatio()
+        {
+            int newWidth = this.Width;
+            int newHeight = (int)(newWidth / InitialAspectRatio);
+
+            if (newHeight > this.Height)
+            {
+                newHeight = this.Height;
+                newWidth = (int)(newHeight * InitialAspectRatio);
+            }
+
+            this.Size = new Size(newWidth, newHeight);
         }
     }
 }
