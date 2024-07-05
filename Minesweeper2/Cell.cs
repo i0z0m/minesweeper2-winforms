@@ -44,7 +44,7 @@
         }
         private Mode _currentMode;
 
-        private Image GetImage() => CurrentMode switch
+        private Bitmap GetImage() => CurrentMode switch
         {
             Mode.AnsBlank0 => Properties.Resources.ans_blank0,
             Mode.AnsBlank1 => Properties.Resources.ans_blank1,
@@ -141,4 +141,3 @@
         }
     }
 }
-

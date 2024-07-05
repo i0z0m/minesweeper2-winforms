@@ -2,15 +2,8 @@
 {
     partial class Minesweeper2
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,41 +15,67 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
+            tableLayoutPanel1 = new TableLayoutPanel();
             MainPanel = new Panel();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             BtnStart = new Button();
             BtnPause = new Button();
+            tableLayoutPanel1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(MainPanel, 0, 1);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.81717443F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 94.18282F));
+            tableLayoutPanel1.Size = new Size(974, 1029);
+            tableLayoutPanel1.TabIndex = 5;
             // 
             // MainPanel
             // 
             MainPanel.BorderStyle = BorderStyle.Fixed3D;
-            MainPanel.Location = new Point(12, 71);
+            MainPanel.Dock = DockStyle.Fill;
+            MainPanel.Location = new Point(3, 62);
             MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(1006, 1007);
-            MainPanel.TabIndex = 0;
+            MainPanel.Size = new Size(968, 964);
+            MainPanel.TabIndex = 4;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(BtnStart);
+            flowLayoutPanel1.Controls.Add(BtnPause);
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.Location = new Point(3, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(968, 53);
+            flowLayoutPanel1.TabIndex = 0;
             // 
             // BtnStart
             // 
-            BtnStart.Location = new Point(12, 12);
+            BtnStart.Location = new Point(3, 3);
             BtnStart.Name = "BtnStart";
             BtnStart.Size = new Size(150, 46);
-            BtnStart.TabIndex = 1;
+            BtnStart.TabIndex = 6;
             BtnStart.Text = "Start";
             BtnStart.UseVisualStyleBackColor = true;
             BtnStart.Click += BtnStart_Click;
             // 
             // BtnPause
             // 
-            BtnPause.Location = new Point(168, 12);
+            BtnPause.Location = new Point(159, 3);
             BtnPause.Name = "BtnPause";
             BtnPause.Size = new Size(150, 46);
-            BtnPause.TabIndex = 2;
+            BtnPause.TabIndex = 7;
             BtnPause.Text = "Pause";
             BtnPause.UseVisualStyleBackColor = true;
             BtnPause.Visible = false;
@@ -66,20 +85,22 @@
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1026, 1083);
-            Controls.Add(BtnPause);
-            Controls.Add(BtnStart);
-            Controls.Add(MainPanel);
+            ClientSize = new Size(974, 1029);
+            Controls.Add(tableLayoutPanel1);
             Name = "Minesweeper2";
             Text = "Minesweeper2";
             Load += Minesweeper2_Load;
+            tableLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel MainPanel;
-        private Button BtnStart;
+        private TableLayoutPanel tableLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel1;
         private Button BtnPause;
+        private Button BtnStart;
+        private Panel MainPanel;
     }
 }

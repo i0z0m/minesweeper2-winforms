@@ -12,12 +12,16 @@
 
         public State CurrentState { get; set; }
         private Dictionary<Point, Cell> _cellList = new Dictionary<Point, Cell>();
+        private bool _isResizing;
 
         public Minesweeper2()
         {
             InitializeComponent();
             CurrentState = State.Init;
             InitializeCellList();
+            this.SizeChanged += Minesweeper2_SizeChanged; // フォームのサイズ変更イベントをハンドル
+            this.ResizeBegin += Minesweeper2_ResizeBegin;
+            this.ResizeEnd += Minesweeper2_ResizeEnd;
         }
 
         private void Minesweeper2_Load(object sender, EventArgs e)
@@ -29,7 +33,7 @@
         {
             int rows = Properties.Settings.Default.NumberOfRows;
             int columns = Properties.Settings.Default.NumberOfColumns;
-            int cellSize = 50;
+            int cellSize = CalculateCellSize(rows, columns);
 
             for (int row = 0; row < rows; row++)
             {
@@ -41,6 +45,13 @@
                     _cellList.Add(cellPosition, cell);
                 }
             }
+        }
+
+        private int CalculateCellSize(int rows, int columns)
+        {
+            int panelSize = Math.Min(MainPanel.Width, MainPanel.Height);
+            int cellSize = panelSize / Math.Max(rows, columns);
+            return cellSize;
         }
 
         private Cell CreateCell(int cellSize)
@@ -86,13 +97,20 @@
             }
 
             int mineCount = (int)(_cellList.Count * Properties.Settings.Default.PercentageOfMines / 100.0);
-            Random random = new Random();
-            var minePositions = _cellList.Keys.OrderBy(_ => random.Next()).Take(mineCount);
-
-            foreach (var minePosition in minePositions)
+            using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
             {
-                _cellList[minePosition].Mine = true;
-                UpdateCellDegree(minePosition);
+                var minePositions = _cellList.Keys.OrderBy(_ =>
+                {
+                    byte[] randomNumber = new byte[4];
+                    rng.GetBytes(randomNumber);
+                    return BitConverter.ToInt32(randomNumber, 0);
+                }).Take(mineCount);
+
+                foreach (var minePosition in minePositions)
+                {
+                    _cellList[minePosition].Mine = true;
+                    UpdateCellDegree(minePosition);
+                }
             }
         }
 
@@ -113,6 +131,8 @@
 
         public void RevealAdjacentCells(Cell cell)
         {
+            if (cell == null) throw new ArgumentNullException(nameof(cell));
+
             int cellX = cell.Location.X / cell.Width;
             int cellY = cell.Location.Y / cell.Height;
 
@@ -221,7 +241,51 @@
                 _ => BtnPause.Text
             };
         }
+
+        private void Minesweeper2_SizeChanged(object? sender, EventArgs e)
+        {
+            if (!_isResizing)
+            {
+                ResizeCells();
+            }
+        }
+
+        private void Minesweeper2_ResizeBegin(object? sender, EventArgs e)
+        {
+            _isResizing = true;
+        }
+
+        private void Minesweeper2_ResizeEnd(object? sender, EventArgs e)
+        {
+            _isResizing = false;
+            ResizeCells();
+        }
+
+        private void ResizeCells()
+        {
+            int rows = Properties.Settings.Default.NumberOfRows;
+            int columns = Properties.Settings.Default.NumberOfColumns;
+            int cellSize = CalculateCellSize(rows, columns);
+
+            foreach (var kvp in _cellList)
+            {
+                Point cellPosition = kvp.Key;
+                Cell cell = kvp.Value;
+                cell.Size = new Size(cellSize, cellSize);
+                cell.Location = new Point(cellPosition.X * cellSize, cellPosition.Y * cellSize);
+            }
+
+            // パネルの右辺の余分なスペースを削除
+            int panelWidth = cellSize * columns;
+            MainPanel.Width = panelWidth;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            // ウィンドウの大きさを正方形にする処理を削除
+            // int size = Math.Min(this.ClientSize.Width, this.ClientSize.Height);
+            // this.ClientSize = new Size(size, size);
+        }
     }
 }
-
-
