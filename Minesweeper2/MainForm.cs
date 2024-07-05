@@ -66,7 +66,7 @@
         {
             ResetCells();
             PlaceMines();
-            CurrentState = State.Run;
+            SetGameState(State.Run);
         }
 
         private void ResetCells()
@@ -137,7 +137,7 @@
         {
             if (CurrentState == State.End) return;
 
-            CurrentState = State.End;
+            SetGameState(State.End);
             RevealAllCells();
             ShowEndGameMessage(isGameOver);
         }
@@ -190,6 +190,38 @@
                 EndGame(false);
             }
         }
+
+        private void BtnPause_Click(object sender, EventArgs e)
+        {
+            if (CurrentState == State.Run)
+            {
+                SetGameState(State.Pausd);
+            }
+            else if (CurrentState == State.Pausd)
+            {
+                SetGameState(State.Run);
+            }
+        }
+
+        private void SetGameState(State newState)
+        {
+            CurrentState = newState;
+            BtnPause.Visible = newState switch
+            {
+                State.Init => false,
+                State.Run => true,
+                State.Pausd => true,
+                State.End => false,
+                _ => BtnPause.Visible
+            };
+            BtnPause.Text = newState switch
+            {
+                State.Pausd => "Resume",
+                State.Run => "Pause",
+                _ => BtnPause.Text
+            };
+        }
     }
 }
+
 

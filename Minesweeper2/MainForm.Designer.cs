@@ -30,6 +30,7 @@
         {
             MainPanel = new Panel();
             BtnStart = new Button();
+            BtnPause = new Button();
             SuspendLayout();
             // 
             // MainPanel
@@ -50,11 +51,23 @@
             BtnStart.UseVisualStyleBackColor = true;
             BtnStart.Click += BtnStart_Click;
             // 
+            // BtnPause
+            // 
+            BtnPause.Location = new Point(168, 12);
+            BtnPause.Name = "BtnPause";
+            BtnPause.Size = new Size(150, 46);
+            BtnPause.TabIndex = 2;
+            BtnPause.Text = "Pause";
+            BtnPause.UseVisualStyleBackColor = true;
+            BtnPause.Visible = false;
+            BtnPause.Click += BtnPause_Click;
+            // 
             // Minesweeper2
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1026, 1083);
+            Controls.Add(BtnPause);
             Controls.Add(BtnStart);
             Controls.Add(MainPanel);
             Name = "Minesweeper2";
@@ -67,5 +80,6 @@
 
         private Panel MainPanel;
         private Button BtnStart;
+        private Button BtnPause;
     }
 }
